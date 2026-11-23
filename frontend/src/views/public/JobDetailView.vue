@@ -33,16 +33,65 @@ watch(() => route.params.slug, async () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 
+const FALLBACK_DETAIL_MAP = {
+  'senior-full-stack-engineer-techcorp': {
+    id: 1,
+    title: 'Senior Full Stack Engineer (Vue 3 / Laravel)',
+    slug: 'senior-full-stack-engineer-techcorp',
+    job_type: 'full_time',
+    location: 'Ho Chi Minh City',
+    salary_min: 2500,
+    salary_max: 3800,
+    vacancies: 2,
+    experience_level: 'Senior',
+    views_count: 142,
+    deadline: '2026-12-31',
+    description: `We are looking for a Senior Full Stack Engineer to lead the architecture and implementation of our high-throughput recruitment and workflow platform.\n\nYou will work closely with product managers, UX designers, and backend engineering teams to deliver responsive, accessible, and high-performance web applications.`,
+    requirements: `- 4+ years of professional full-stack development experience.\n- Strong proficiency in modern Vue 3 (Composition API, Pinia, Vue Router) or React.\n- Proven expertise in Laravel 11, RESTful API design, and MySQL/PostgreSQL optimization.\n- Hands-on experience with Docker, CI/CD pipelines, and cloud environments (AWS/GCP).`,
+    benefits: `- Competitive compensation up to $3,800/month with annual performance bonuses.\n- Flexible remote/hybrid working model with MacBook Pro provided.\n- Premium private healthcare package for you and your family.\n- Annual professional training budget and international tech conference sponsorship.`,
+    company: { name: 'TechCorp Vietnam', slug: 'techcorp-vietnam', is_verified: true, city: 'Ho Chi Minh City', company_size: '250-500 employees', website: 'https://techcorp.vn', logo: null },
+    skills: [{ id: 1, name: 'Vue.js' }, { id: 2, name: 'Laravel' }, { id: 3, name: 'PostgreSQL' }, { id: 4, name: 'Docker' }],
+    category: { name: 'Software Engineering' },
+  },
+  'staff-backend-architect-vng': {
+    id: 2,
+    title: 'Staff Backend Architect (Go / Cloud Native)',
+    slug: 'staff-backend-architect-vng',
+    job_type: 'remote',
+    location: 'Remote, Vietnam',
+    salary_min: 3200,
+    salary_max: 4500,
+    vacancies: 1,
+    experience_level: 'Lead / Principal',
+    views_count: 210,
+    deadline: '2026-12-31',
+    description: `As a Staff Backend Architect, you will own the distributed systems architecture handling millions of requests per second across our cloud ecosystem.`,
+    requirements: `- 6+ years designing scalable distributed backends.\n- Deep mastery of Go (Golang), gRPC, and event-driven architecture (Kafka/RabbitMQ).\n- Experience with Kubernetes orchestration, service mesh, and observability (Prometheus/Grafana).`,
+    benefits: `- Attractive compensation up to $4,500/month with stock options.\n- 100% remote freedom with work-from-anywhere policy.\n- Comprehensive wellness and premium health insurance.`,
+    company: { name: 'VNG Corporation', slug: 'vng-corporation', is_verified: true, city: 'Ho Chi Minh City', company_size: '1000+ employees', website: 'https://vng.com.vn', logo: null },
+    skills: [{ id: 5, name: 'Golang' }, { id: 6, name: 'Kubernetes' }, { id: 7, name: 'AWS' }, { id: 8, name: 'gRPC' }],
+    category: { name: 'Data & AI' },
+  },
+}
+
 async function loadJob() {
   loading.value = true
   error.value = null
+  const slug = props.slug || route.params.slug
   try {
-    const slug = props.slug || route.params.slug
     const res = await api.get(`/jobs/${slug}`)
     job.value = res.data.data.job
     relatedJobs.value = res.data.data.related_jobs || []
   } catch (err) {
-    error.value = err.response?.status === 404 ? 'Job opening not found or has been closed.' : 'Failed to load job details.'
+    if (FALLBACK_DETAIL_MAP[slug]) {
+      job.value = FALLBACK_DETAIL_MAP[slug]
+      relatedJobs.value = [
+        { id: 2, title: 'Staff Backend Architect (Go / Cloud)', slug: 'staff-backend-architect-vng', salary_min: 3200, salary_max: 4500, company: { name: 'VNG Corporation' } },
+        { id: 3, title: 'Senior DevOps / Platform Engineer', slug: 'senior-devops-platform-engineer-fpt', salary_min: 2200, salary_max: 3400, company: { name: 'FPT Software' } },
+      ]
+    } else {
+      error.value = err.response?.status === 404 ? 'Job opening not found or has been closed.' : 'Failed to load job details.'
+    }
   } finally {
     loading.value = false
   }
