@@ -39,10 +39,10 @@
   /* Surfaces & Canvas */
   --jc-text-primary:    #0f172a;   /* Deep slate / navy */
   --jc-text-secondary:  #475569;   /* Muted slate */
-  --jc-canvas:          #f8fafc;   /* Soft slate canvas */
-  --jc-surface:         #ffffff;   /* Pure white */
-  --jc-border:          #e2e8f0;   /* Clean subtle border */
-  --jc-border-hover:    #c7d2fe;   /* Indigo soft hover */
+  --jc-canvas:          #f1f5f9;   /* Modern calm slate canvas with depth */
+  --jc-surface:         #ffffff;   /* Pure white elevated cards */
+  --jc-border:          #cbd5e1;   /* Defined crisp border */
+  --jc-border-hover:    #a5b4fc;   /* Indigo soft hover */
 
   /* Bootstrap token overrides */
   --bs-primary:               #4f46e5;
@@ -55,9 +55,9 @@
   --bs-link-color-rgb:   79, 70, 229;
   --bs-link-hover-color: #4338ca;
 
-  --bs-body-bg:     #f8fafc;
+  --bs-body-bg:     #f1f5f9;
   --bs-body-color:  #0f172a;
-  --bs-border-color:#e2e8f0;
+  --bs-border-color:#cbd5e1;
 
   /* Card */
   --bs-card-border-radius: 10px;

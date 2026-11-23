@@ -484,8 +484,8 @@ function getCategoryColorClass(slug) {
    HERO
 ══════════════════════════════════════ */
 .hero-section {
-  background: radial-gradient(ellipse 90% 65% at 50% -15%, #edf2fe 0%, #f8fafc 60%, #ffffff 100%);
-  border-bottom: 1px solid #e2e8f0;
+  background: radial-gradient(ellipse 95% 75% at 50% -18%, #dde7ff 0%, #ede9fe 40%, #eef2ff 70%, #f1f5f9 100%);
+  border-bottom: 1px solid #cbd5e1;
   padding-top: 5rem;
   padding-bottom: 5rem;
   position: relative;
@@ -668,16 +668,16 @@ function getCategoryColorClass(slug) {
 ══════════════════════════════════════ */
 .stat-card {
   background: #ffffff;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #c7d2fe;
   border-radius: 14px;
-  padding: 1.5rem 1.65rem;
-  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+  padding: 1.6rem 1.75rem;
+  box-shadow: 0 12px 30px -4px rgba(79, 70, 229, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
   transition: all 0.25s ease;
   position: relative;
 }
 .stat-card:hover {
-  border-color: #a5b4fc;
-  box-shadow: 0 16px 32px -4px rgba(79, 70, 229, 0.14);
+  border-color: #818cf8;
+  box-shadow: 0 18px 36px -4px rgba(79, 70, 229, 0.18);
   transform: translateY(-3px);
 }
 .stat-card--offset { margin-left: 2rem; }
@@ -749,10 +749,10 @@ function getCategoryColorClass(slug) {
 /* ══════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════ */
-.section-categories { padding: 5rem 0; background: #ffffff; }
-.section-jobs       { padding: 5rem 0; background: #f8fafc; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
-.section-employers  { padding: 5rem 0; background: #ffffff; }
-.section-cta        { padding: 5rem 0; background: #f8fafc; border-top: 1px solid #e2e8f0; }
+.section-categories { padding: 5rem 0; background: #ffffff; border-bottom: 1px solid #cbd5e1; }
+.section-jobs       { padding: 5rem 0; background: linear-gradient(180deg, #f1f5f9 0%, #eef2ff 100%); border-bottom: 1px solid #cbd5e1; }
+.section-employers  { padding: 5rem 0; background: #ffffff; border-bottom: 1px solid #cbd5e1; }
+.section-cta        { padding: 5rem 0; background: #f1f5f9; }
 
 .section-header {
   display: flex;

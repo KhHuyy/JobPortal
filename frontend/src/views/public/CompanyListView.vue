@@ -152,7 +152,7 @@ const filteredCompanies = computed(() => {
 
 <style scoped>
 .companies-page {
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   min-height: 80vh;
 }
 
