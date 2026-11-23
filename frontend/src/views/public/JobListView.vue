@@ -123,7 +123,7 @@ watch(() => route.query, (newQuery) => {
   <div class="jobs-page py-4">
     <div class="container">
 
-      <!-- Breadcrumbs & Header -->
+      <!-- Breadcrumbs & Editorial Header -->
       <div class="mb-4">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-2 small">
@@ -131,38 +131,39 @@ watch(() => route.query, (newQuery) => {
             <li class="breadcrumb-item active" aria-current="page">Jobs Directory</li>
           </ol>
         </nav>
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 pb-3 border-bottom">
           <div>
-            <h1 class="h3 fw-bold mb-1 text-dark">Find Tech &amp; Software Jobs</h1>
-            <p class="text-muted small mb-0">Browse through verified openings from leading engineering teams</p>
+            <div class="jobs-eyebrow">Positions &amp; Careers</div>
+            <h1 class="jobs-title-lg mb-1">Find your next engineering role</h1>
+            <p class="jobs-subtitle mb-0">Direct access to verified tech teams — transparent compensation and direct contact.</p>
           </div>
-          <div class="text-muted small fw-semibold" v-if="!loading">
-            Showing <span class="text-dark">{{ jobs.length }}</span> of <span class="text-dark">{{ pagination.total || 0 }}</span> positions
+          <div class="jobs-count-pill" v-if="!loading">
+            <span class="count-num">{{ pagination.total || jobs.length }}</span> roles available
           </div>
         </div>
 
         <!-- Active filter chips row -->
-        <div v-if="hasActiveFilters" class="d-flex align-items-center flex-wrap gap-2 mt-3 pt-2 border-top">
+        <div v-if="hasActiveFilters" class="d-flex align-items-center flex-wrap gap-2 mt-3 pt-1">
           <span class="text-muted small fw-semibold">Active filters:</span>
           <span v-if="filters.keyword" class="filter-chip">
             Keyword: {{ filters.keyword }}
-            <i class="bi bi-x-circle ms-1 cursor-pointer" @click="removeFilter('keyword')"></i>
+            <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('keyword')"></i>
           </span>
           <span v-if="filters.category_id" class="filter-chip">
             Category
-            <i class="bi bi-x-circle ms-1 cursor-pointer" @click="removeFilter('category_id')"></i>
+            <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('category_id')"></i>
           </span>
           <span v-if="filters.location" class="filter-chip">
             Location: {{ filters.location }}
-            <i class="bi bi-x-circle ms-1 cursor-pointer" @click="removeFilter('location')"></i>
+            <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('location')"></i>
           </span>
           <span v-if="filters.job_type" class="filter-chip">
             Type: {{ formatJobType(filters.job_type) }}
-            <i class="bi bi-x-circle ms-1 cursor-pointer" @click="removeFilter('job_type')"></i>
+            <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('job_type')"></i>
           </span>
           <span v-if="filters.skill_id" class="filter-chip">
             Skill
-            <i class="bi bi-x-circle ms-1 cursor-pointer" @click="removeFilter('skill_id')"></i>
+            <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('skill_id')"></i>
           </span>
           <button class="btn btn-sm btn-link text-danger text-decoration-none p-0 ms-2" @click="clearFilters">
             Clear all
@@ -176,7 +177,7 @@ watch(() => route.query, (newQuery) => {
           <div class="card filter-sidebar-card p-3 shadow-none">
             <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
               <span class="fw-bold fs-6 text-dark d-flex align-items-center gap-2">
-                <i class="bi bi-sliders text-primary"></i> Filter Openings
+                <i class="bi bi-sliders2 text-primary"></i> Filter Openings
               </span>
               <button v-if="hasActiveFilters" class="btn btn-sm btn-link text-muted p-0 text-decoration-none small" @click="clearFilters">
                 Reset
@@ -222,35 +223,35 @@ watch(() => route.query, (newQuery) => {
               <label class="filter-label">Employment Type</label>
               <div class="d-flex flex-column gap-1">
                 <label
-                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1 rounded"
+                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1.5 rounded"
                   :class="{ active: filters.job_type === '' }"
                 >
                   <span class="small">All Types</span>
                   <input type="radio" value="" v-model="filters.job_type" @change="applyFilters" class="form-check-input m-0" />
                 </label>
                 <label
-                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1 rounded"
+                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1.5 rounded"
                   :class="{ active: filters.job_type === 'full_time' }"
                 >
                   <span class="small">Full Time</span>
                   <input type="radio" value="full_time" v-model="filters.job_type" @change="applyFilters" class="form-check-input m-0" />
                 </label>
                 <label
-                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1 rounded"
+                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1.5 rounded"
                   :class="{ active: filters.job_type === 'remote' }"
                 >
                   <span class="small">Remote</span>
                   <input type="radio" value="remote" v-model="filters.job_type" @change="applyFilters" class="form-check-input m-0" />
                 </label>
                 <label
-                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1 rounded"
+                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1.5 rounded"
                   :class="{ active: filters.job_type === 'part_time' }"
                 >
                   <span class="small">Part Time</span>
                   <input type="radio" value="part_time" v-model="filters.job_type" @change="applyFilters" class="form-check-input m-0" />
                 </label>
                 <label
-                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1 rounded"
+                  class="type-check-label d-flex align-items-center justify-content-between px-2 py-1.5 rounded"
                   :class="{ active: filters.job_type === 'internship' }"
                 >
                   <span class="small">Internship</span>
@@ -284,7 +285,7 @@ watch(() => route.query, (newQuery) => {
             </div>
 
             <div class="d-grid gap-2">
-              <button class="btn btn-primary btn-sm" @click="applyFilters">
+              <button class="btn btn-primary btn-sm fw-semibold" @click="applyFilters">
                 Apply Filters
               </button>
               <button v-if="hasActiveFilters" class="btn btn-light btn-sm border" @click="clearFilters">
@@ -329,56 +330,64 @@ watch(() => route.query, (newQuery) => {
 
           <!-- Job Cards List -->
           <div v-else class="d-flex flex-column gap-3">
-            <div v-for="job in jobs" :key="job.id" class="card job-item-card p-3 p-md-4">
-              <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
-                <!-- Left: Logo + Details -->
-                <div class="d-flex align-items-start gap-3 flex-grow-1 overflow-hidden">
-                  <img v-if="job.company?.logo" :src="job.company.logo" class="company-item-logo" :alt="job.company.name" />
-                  <div class="company-item-fallback" v-else>
-                    {{ (job.company?.name || 'C')[0].toUpperCase() }}
-                  </div>
+            <div v-for="job in jobs" :key="job.id" class="job-item-card">
+              <!-- Left accent bar -->
+              <div class="job-item-accent" :class="'accent-' + (job.job_type || 'full_time')"></div>
 
-                  <div class="flex-grow-1 overflow-hidden">
-                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                      <router-link :to="{ name: 'JobDetail', params: { slug: job.slug } }" class="job-item-title text-decoration-none">
-                        {{ job.title }}
-                      </router-link>
-                      <span class="job-type-pill-sm" :class="'type-' + (job.job_type || 'full_time')">
-                        {{ formatJobType(job.job_type) }}
-                      </span>
+              <div class="job-item-inner p-3 p-md-4">
+                <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
+                  <!-- Left: Logo + Details -->
+                  <div class="d-flex align-items-start gap-3 flex-grow-1 overflow-hidden">
+                    <img v-if="job.company?.logo" :src="job.company.logo" class="company-item-logo" :alt="job.company.name" />
+                    <div class="company-item-fallback" v-else>
+                      {{ (job.company?.name || 'C')[0].toUpperCase() }}
                     </div>
 
-                    <div class="d-flex align-items-center gap-2 small text-muted mb-2 flex-wrap">
-                      <router-link :to="{ name: 'CompanyDetail', params: { slug: job.company?.slug } }" class="company-link text-decoration-none">
-                        {{ job.company?.name }}
-                      </router-link>
-                      <span>&bull;</span>
-                      <span><i class="bi bi-geo-alt"></i> {{ job.location }}</span>
-                      <span v-if="job.experience_level">&bull;</span>
-                      <span v-if="job.experience_level">{{ job.experience_level }}</span>
-                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                      <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <router-link :to="{ name: 'JobDetail', params: { slug: job.slug } }" class="job-item-title text-decoration-none">
+                          {{ job.title }}
+                        </router-link>
+                        <span class="job-type-pill-sm" :class="'type-' + (job.job_type || 'full_time')">
+                          {{ formatJobType(job.job_type) }}
+                        </span>
+                      </div>
 
-                    <!-- Skills tags -->
-                    <div class="d-flex flex-wrap gap-1" v-if="job.skills?.length">
-                      <span v-for="skill in job.skills.slice(0, 5)" :key="skill.id" class="skill-pill-sm">
-                        {{ skill.name }}
-                      </span>
-                      <span v-if="job.skills.length > 5" class="text-muted small ps-1" style="font-size:0.7rem;">
-                        +{{ job.skills.length - 5 }}
-                      </span>
+                      <div class="d-flex align-items-center gap-2 small text-muted mb-2 flex-wrap">
+                        <router-link :to="{ name: 'CompanyDetail', params: { slug: job.company?.slug } }" class="company-link text-decoration-none">
+                          {{ job.company?.name }}
+                        </router-link>
+                        <span>&bull;</span>
+                        <span><i class="bi bi-geo-alt"></i> {{ job.location }}</span>
+                        <span v-if="job.experience_level">&bull;</span>
+                        <span v-if="job.experience_level">{{ job.experience_level }}</span>
+                      </div>
+
+                      <!-- Skills tags -->
+                      <div class="d-flex flex-wrap gap-1" v-if="job.skills?.length">
+                        <span v-for="skill in job.skills.slice(0, 5)" :key="skill.id" class="skill-pill-sm">
+                          {{ skill.name }}
+                        </span>
+                        <span v-if="job.skills.length > 5" class="text-muted small ps-1" style="font-size:0.7rem;">
+                          +{{ job.skills.length - 5 }}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Right: Compensation + Action -->
-                <div class="text-md-end text-nowrap d-flex flex-row flex-md-column justify-content-between align-items-center align-items-md-end w-100 w-md-auto pt-2 pt-md-0 border-top border-md-0">
-                  <div class="salary-amount">{{ formatSalary(job) }}</div>
-                  <div class="text-muted small mt-md-1" style="font-size:0.75rem;">
-                    {{ timeAgo(job.created_at) }}
+                  <!-- Right: Compensation + Action -->
+                  <div class="text-md-end text-nowrap d-flex flex-row flex-md-column justify-content-between align-items-center align-items-md-end w-100 w-md-auto pt-2 pt-md-0 border-top border-md-0">
+                    <div>
+                      <div class="salary-label">Salary</div>
+                      <div class="salary-amount">{{ formatSalary(job) }}</div>
+                    </div>
+                    <div class="text-muted small mt-md-1" style="font-size:0.75rem;">
+                      {{ timeAgo(job.created_at) }}
+                    </div>
+                    <router-link :to="{ name: 'JobDetail', params: { slug: job.slug } }" class="job-view-btn mt-md-2">
+                      View <i class="bi bi-arrow-right ms-1"></i>
+                    </router-link>
                   </div>
-                  <router-link :to="{ name: 'JobDetail', params: { slug: job.slug } }" class="btn btn-sm btn-outline-primary px-3 mt-md-2">
-                    Details &rarr;
-                  </router-link>
                 </div>
               </div>
             </div>
@@ -411,8 +420,42 @@ watch(() => route.query, (newQuery) => {
 
 <style scoped>
 .jobs-page {
-  background-color: #f9fafb;
+  background-color: #f8fafc;
   min-height: 80vh;
+}
+
+/* ── Editorial Header ─────────────────── */
+.jobs-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6366f1;
+  margin-bottom: 0.35rem;
+}
+.jobs-title-lg {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+.jobs-subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+.jobs-count-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 0.4rem 0.9rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+.count-num {
+  font-weight: 800;
+  color: #4f46e5;
 }
 
 .filter-chip {
@@ -438,7 +481,7 @@ watch(() => route.query, (newQuery) => {
 }
 .filter-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -469,44 +512,51 @@ watch(() => route.query, (newQuery) => {
   border-radius: 12px;
   position: relative;
   overflow: hidden;
-  transition: all 0.22s ease;
-}
-.job-item-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #4f46e5, #7c3aed);
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
+  display: flex;
 }
 .job-item-card:hover {
   border-color: #c7d2fe;
-  box-shadow: 0 10px 24px -5px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 10px 24px -6px rgba(79, 70, 229, 0.08);
   transform: translateY(-2px);
 }
-.job-item-card:hover::before {
-  opacity: 1;
+
+/* Left accent bar */
+.job-item-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+.accent-full_time  { background: #4f46e5; }
+.accent-remote     { background: #0891b2; }
+.accent-internship { background: #d97706; }
+.accent-part_time  { background: #7c3aed; }
+
+.job-item-inner {
+  flex: 1;
+  padding-left: 1.4rem !important;
 }
 
 .company-item-logo {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid #e2e8f0;
   background: #ffffff;
+  flex-shrink: 0;
 }
 .company-item-fallback {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
   color: #4f46e5;
   font-weight: 800;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -529,10 +579,11 @@ watch(() => route.query, (newQuery) => {
 .company-link:hover { color: #4f46e5; }
 
 .job-type-pill-sm {
-  font-size: 0.725rem;
+  font-size: 0.72rem;
   font-weight: 600;
   padding: 0.2rem 0.55rem;
   border-radius: 6px;
+  white-space: nowrap;
 }
 .job-type-pill-sm.type-full_time { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
 .job-type-pill-sm.type-remote    { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
@@ -544,14 +595,41 @@ watch(() => route.query, (newQuery) => {
   color: #475569;
   background-color: #f1f5f9;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  padding: 0.18rem 0.5rem;
 }
 
+.salary-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  font-weight: 600;
+}
 .salary-amount {
   font-weight: 800;
   color: #059669;
   font-size: 0.95rem;
+}
+
+.job-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4f46e5;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 6px;
+  padding: 0.35rem 0.85rem;
+  text-decoration: none;
+  transition: all 0.18s ease;
+}
+.job-view-btn:hover {
+  background: #4f46e5;
+  color: #ffffff;
+  border-color: #4f46e5;
 }
 
 /* ── Empty State ──────────────────────── */

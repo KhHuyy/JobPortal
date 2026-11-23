@@ -39,10 +39,11 @@ const filteredCompanies = computed(() => {
         </ol>
       </nav>
 
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4 pb-3 border-bottom">
         <div>
-          <h1 class="h3 fw-bold mb-1 text-dark">Verified Tech Employers</h1>
-          <p class="text-muted small mb-0">Discover top engineering cultures, tech stacks, and team open positions</p>
+          <div class="companies-eyebrow">Engineering Directory</div>
+          <h1 class="companies-title-lg mb-1">Verified Tech Employers</h1>
+          <p class="companies-subtitle mb-0">Discover top engineering cultures, verified tech stacks, and open positions.</p>
         </div>
         <div class="search-input-wrap" style="max-width:320px; width:100%;">
           <div class="input-group">
@@ -51,7 +52,7 @@ const filteredCompanies = computed(() => {
               v-model="searchQuery"
               type="text"
               class="form-control border-start-0"
-              placeholder="Search by company or city..."
+              placeholder="Search company or city..."
             />
           </div>
         </div>
@@ -93,7 +94,7 @@ const filteredCompanies = computed(() => {
       <!-- Company Cards -->
       <div v-else class="row g-4">
         <div v-for="company in filteredCompanies" :key="company.id" class="col-md-6 col-lg-4">
-          <div class="card company-item-card h-100 p-4 d-flex flex-column">
+          <div class="company-item-card h-100 p-4 d-flex flex-column">
             <!-- Header -->
             <div class="d-flex align-items-start gap-3 mb-3">
               <img v-if="company.logo" :src="company.logo" class="company-logo-avatar" :alt="company.name" />
@@ -103,7 +104,7 @@ const filteredCompanies = computed(() => {
               <div class="flex-grow-1 overflow-hidden">
                 <div class="d-flex align-items-center gap-1 mb-1">
                   <h5 class="mb-0 fw-bold text-truncate">
-                    <router-link :to="{ name: 'CompanyDetail', params: { slug: company.slug } }" class="text-dark text-decoration-none">
+                    <router-link :to="{ name: 'CompanyDetail', params: { slug: company.slug } }" class="company-name-link">
                       {{ company.name }}
                     </router-link>
                   </h5>
@@ -123,11 +124,11 @@ const filteredCompanies = computed(() => {
 
             <!-- Footer: Jobs count + Button -->
             <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
-              <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
-                <i class="bi bi-briefcase me-1"></i> {{ company.open_jobs_count || 0 }} open role{{ company.open_jobs_count !== 1 ? 's' : '' }}
+              <span class="company-role-pill">
+                {{ company.open_jobs_count || 0 }} open role{{ company.open_jobs_count !== 1 ? 's' : '' }}
               </span>
-              <router-link :to="{ name: 'CompanyDetail', params: { slug: company.slug } }" class="btn btn-sm btn-outline-primary">
-                View Profile &rarr;
+              <router-link :to="{ name: 'CompanyDetail', params: { slug: company.slug } }" class="company-view-link">
+                View profile &rarr;
               </router-link>
             </div>
           </div>
@@ -139,20 +140,39 @@ const filteredCompanies = computed(() => {
 
 <style scoped>
 .companies-page {
-  background-color: #f9fafb;
+  background-color: #f8fafc;
   min-height: 80vh;
+}
+
+.companies-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6366f1;
+  margin-bottom: 0.35rem;
+}
+.companies-title-lg {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+.companies-subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
 }
 
 .company-item-card {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.2s ease;
 }
 .company-item-card:hover {
-  border-color: #93c5fd;
+  border-color: #c7d2fe;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px -4px rgba(37, 99, 235, 0.08);
+  box-shadow: 0 10px 24px -5px rgba(79, 70, 229, 0.08);
 }
 
 .company-logo-avatar {
@@ -167,13 +187,42 @@ const filteredCompanies = computed(() => {
   width: 52px;
   height: 52px;
   border-radius: 10px;
-  background-color: #eff6ff;
-  color: #2563eb;
-  font-weight: 700;
+  background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+  color: #4f46e5;
+  font-weight: 800;
   font-size: 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.company-name-link {
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 700;
+}
+.company-name-link:hover {
+  color: #4f46e5;
+}
+
+.company-role-pill {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #4f46e5;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 6px;
+  padding: 0.25rem 0.65rem;
+}
+
+.company-view-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4f46e5;
+  text-decoration: none;
+}
+.company-view-link:hover {
+  text-decoration: underline;
 }
 </style>

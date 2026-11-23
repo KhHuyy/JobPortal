@@ -174,7 +174,9 @@ const deadlineFormatted = computed(() => {
         <!-- Left Main Column (68%) -->
         <main class="col-lg-8">
           <!-- Job Header Card -->
-          <div class="card job-header-card p-4 mb-4">
+          <div class="job-header-card position-relative overflow-hidden p-4 mb-4">
+            <div class="job-detail-accent" :class="'accent-' + (job.job_type || 'full_time')"></div>
+
             <div class="d-flex align-items-start gap-3">
               <img v-if="job.company?.logo" :src="job.company.logo" class="detail-logo" :alt="job.company.name" />
               <div class="detail-logo-fallback" v-else>
@@ -182,7 +184,7 @@ const deadlineFormatted = computed(() => {
               </div>
 
               <div class="flex-grow-1 overflow-hidden">
-                <h1 class="h3 fw-bold mb-1 text-dark">{{ job.title }}</h1>
+                <h1 class="job-detail-title mb-1">{{ job.title }}</h1>
                 <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
                   <router-link :to="{ name: 'CompanyDetail', params: { slug: job.company?.slug } }" class="fw-semibold text-primary text-decoration-none">
                     {{ job.company?.name }}
@@ -195,7 +197,7 @@ const deadlineFormatted = computed(() => {
                 </div>
 
                 <div class="d-flex flex-wrap gap-2">
-                  <span class="badge bg-primary-subtle text-primary border border-primary-subtle">{{ formatJobType(job.job_type) }}</span>
+                  <span class="job-type-pill" :class="'type-' + (job.job_type || 'full_time')">{{ formatJobType(job.job_type) }}</span>
                   <span class="badge bg-light text-dark border" v-if="job.experience_level">{{ job.experience_level }}</span>
                   <span class="badge bg-light text-dark border" v-if="job.category?.name">{{ job.category.name }}</span>
                   <span class="badge bg-success-subtle text-success border border-success-subtle" v-if="job.vacancies > 1">
@@ -206,53 +208,53 @@ const deadlineFormatted = computed(() => {
             </div>
 
             <!-- Key Metrics Strip -->
-            <div class="row text-center g-3 pt-3 mt-3 border-top bg-light-subtle rounded-3">
-              <div class="col-6 col-md-3">
-                <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem;">Compensation</div>
-                <div class="fw-bold text-success fs-6 mt-1">{{ formatSalary(job) }}</div>
+            <div class="metrics-grid mt-4 pt-3 border-top">
+              <div class="metric-cell">
+                <div class="metric-label">Compensation</div>
+                <div class="metric-val text-success">{{ formatSalary(job) }}</div>
               </div>
-              <div class="col-6 col-md-3">
-                <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem;">Deadline</div>
-                <div class="fw-bold text-dark fs-6 mt-1">{{ deadlineFormatted }}</div>
+              <div class="metric-cell">
+                <div class="metric-label">Deadline</div>
+                <div class="metric-val text-dark">{{ deadlineFormatted }}</div>
               </div>
-              <div class="col-6 col-md-3">
-                <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem;">Location Type</div>
-                <div class="fw-bold text-dark fs-6 mt-1">{{ job.job_type === 'remote' ? '100% Remote' : job.location }}</div>
+              <div class="metric-cell">
+                <div class="metric-label">Work Mode</div>
+                <div class="metric-val text-dark">{{ job.job_type === 'remote' ? '100% Remote' : job.location }}</div>
               </div>
-              <div class="col-6 col-md-3">
-                <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem;">Views</div>
-                <div class="fw-bold text-dark fs-6 mt-1">{{ job.views_count || 0 }} views</div>
+              <div class="metric-cell">
+                <div class="metric-label">Activity</div>
+                <div class="metric-val text-dark">{{ job.views_count || 0 }} views</div>
               </div>
             </div>
           </div>
 
           <!-- Job Description -->
-          <div class="card p-4 mb-4">
-            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+          <div class="content-card p-4 mb-4">
+            <h5 class="content-heading mb-3">
               <i class="bi bi-file-earmark-text text-primary"></i> Job Overview &amp; Responsibilities
             </h5>
             <div class="prose-content">{{ job.description }}</div>
           </div>
 
           <!-- Requirements -->
-          <div class="card p-4 mb-4">
-            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+          <div class="content-card p-4 mb-4">
+            <h5 class="content-heading mb-3">
               <i class="bi bi-check2-circle text-primary"></i> Candidate Qualifications &amp; Skills
             </h5>
             <div class="prose-content">{{ job.requirements }}</div>
           </div>
 
           <!-- Benefits -->
-          <div class="card p-4 mb-4" v-if="job.benefits">
-            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+          <div class="content-card p-4 mb-4" v-if="job.benefits">
+            <h5 class="content-heading mb-3">
               <i class="bi bi-gift text-primary"></i> Benefits &amp; Working Perks
             </h5>
             <div class="prose-content">{{ job.benefits }}</div>
           </div>
 
           <!-- Required Skills -->
-          <div class="card p-4 mb-4" v-if="job.skills?.length">
-            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+          <div class="content-card p-4 mb-4" v-if="job.skills?.length">
+            <h5 class="content-heading mb-3">
               <i class="bi bi-tags text-primary"></i> Required Tech Stack
             </h5>
             <div class="d-flex flex-wrap gap-2">
@@ -266,14 +268,14 @@ const deadlineFormatted = computed(() => {
         <!-- Right Sticky Sidebar (32%) -->
         <aside class="col-lg-4">
           <!-- Sticky Apply Box -->
-          <div class="card apply-widget-card p-4 mb-4 shadow-sm">
-            <h5 class="fw-bold mb-1">Ready to Apply?</h5>
+          <div class="apply-widget-card p-4 mb-4">
+            <h5 class="fw-bold mb-1 text-dark">Ready to Apply?</h5>
             <p class="text-muted small mb-3">Send your application directly to the hiring manager.</p>
 
             <div class="d-grid gap-2 mb-3">
               <!-- If Candidate -->
               <template v-if="auth.isCandidate">
-                <button class="btn btn-primary btn-lg shadow-sm" @click="openApplyModal">
+                <button class="btn btn-primary btn-lg shadow-sm fw-bold" @click="openApplyModal">
                   <i class="bi bi-send me-1"></i> Apply for this position
                 </button>
                 <button
@@ -289,7 +291,7 @@ const deadlineFormatted = computed(() => {
 
               <!-- If Guest -->
               <template v-else-if="!auth.isAuthenticated">
-                <router-link :to="{ name: 'Login', query: { redirect: route.fullPath } }" class="btn btn-primary btn-lg shadow-sm">
+                <router-link :to="{ name: 'Login', query: { redirect: route.fullPath } }" class="btn btn-primary btn-lg shadow-sm fw-bold">
                   Sign in to Apply
                 </router-link>
                 <router-link to="/register" class="btn btn-outline-secondary">
@@ -307,19 +309,19 @@ const deadlineFormatted = computed(() => {
 
             <div class="d-flex align-items-center gap-2 text-muted small pt-2 border-top">
               <i class="bi bi-shield-check text-success fs-5"></i>
-              <span>Direct application &bull; No middleman &bull; 100% Free</span>
+              <span>Direct application &bull; No middleman &bull; Free</span>
             </div>
           </div>
 
           <!-- Company Info Card -->
-          <div class="card p-4 mb-4">
-            <h6 class="fw-bold text-uppercase text-muted small mb-3" style="letter-spacing:0.05em;">About the Employer</h6>
+          <div class="content-card p-4 mb-4">
+            <h6 class="fw-bold text-uppercase text-muted small mb-3" style="letter-spacing:0.06em; font-size: 0.72rem;">About the Employer</h6>
             <div class="text-center mb-3">
               <img v-if="job.company?.logo" :src="job.company.logo" class="company-sidebar-logo mx-auto mb-2" :alt="job.company.name" />
               <div v-else class="company-sidebar-fallback mx-auto mb-2">
                 {{ (job.company?.name || 'C')[0] }}
               </div>
-              <h6 class="fw-bold mb-1">{{ job.company?.name }}</h6>
+              <h6 class="fw-bold mb-1 text-dark">{{ job.company?.name }}</h6>
               <span v-if="job.company?.is_verified" class="badge bg-success-subtle text-success border border-success-subtle small">
                 <i class="bi bi-patch-check-fill me-1"></i>Verified Company
               </span>
@@ -340,14 +342,14 @@ const deadlineFormatted = computed(() => {
               </li>
             </ul>
 
-            <router-link :to="{ name: 'CompanyDetail', params: { slug: job.company?.slug } }" class="btn btn-outline-primary btn-sm w-100">
+            <router-link :to="{ name: 'CompanyDetail', params: { slug: job.company?.slug } }" class="btn btn-outline-primary btn-sm w-100 fw-semibold">
               View Company Profile &rarr;
             </router-link>
           </div>
 
           <!-- Related Jobs -->
-          <div class="card p-4" v-if="relatedJobs.length">
-            <h6 class="fw-bold text-uppercase text-muted small mb-3" style="letter-spacing:0.05em;">Similar Opportunities</h6>
+          <div class="content-card p-4" v-if="relatedJobs.length">
+            <h6 class="fw-bold text-uppercase text-muted small mb-3" style="letter-spacing:0.06em; font-size: 0.72rem;">Similar Opportunities</h6>
             <div class="d-flex flex-column gap-3">
               <div v-for="rj in relatedJobs" :key="rj.id" class="related-job-item pb-2 border-bottom">
                 <router-link :to="{ name: 'JobDetail', params: { slug: rj.slug } }" class="fw-semibold text-dark text-decoration-none d-block">
@@ -437,7 +439,7 @@ const deadlineFormatted = computed(() => {
 
 <style scoped>
 .job-detail-page {
-  background-color: #f9fafb;
+  background-color: #f8fafc;
   min-height: 80vh;
 }
 
@@ -446,6 +448,38 @@ const deadlineFormatted = computed(() => {
   border-radius: 12px;
   background: #ffffff;
 }
+
+.job-detail-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+.accent-full_time  { background: #4f46e5; }
+.accent-remote     { background: #0891b2; }
+.accent-internship { background: #d97706; }
+.accent-part_time  { background: #7c3aed; }
+
+.job-detail-title {
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+.job-type-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.job-type-pill.type-full_time { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+.job-type-pill.type-remote    { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+.job-type-pill.type-internship{ background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+.job-type-pill.type-part_time { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
 
 .detail-logo {
   width: 64px;
@@ -469,6 +503,42 @@ const deadlineFormatted = computed(() => {
   flex-shrink: 0;
 }
 
+/* ── Metrics Grid ─────────────────────── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1rem;
+}
+.metric-cell {
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+}
+.metric-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin-bottom: 0.2rem;
+}
+.metric-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+/* ── Content Cards ────────────────────── */
+.content-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+}
+.content-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
 .prose-content {
   white-space: pre-line;
   line-height: 1.7;
@@ -483,7 +553,7 @@ const deadlineFormatted = computed(() => {
   border: 1px solid #c7d2fe;
   border-radius: 14px;
   background: #ffffff;
-  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.08);
 }
 
 .company-sidebar-logo {
