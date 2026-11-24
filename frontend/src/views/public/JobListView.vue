@@ -130,16 +130,41 @@ async function fetchJobs() {
       pagination.value = { currentPage: 1, lastPage: 1, total: FALLBACK_DIRECTORY_JOBS.length }
     }
   } catch (err) {
-    console.warn('API get jobs error, displaying verified directory jobs:', err)
-    if (!hasActiveFilters.value) {
-      jobs.value = FALLBACK_DIRECTORY_JOBS
-      pagination.value = { currentPage: 1, lastPage: 1, total: FALLBACK_DIRECTORY_JOBS.length }
-    } else {
-      jobs.value = []
+    console.warn('API get jobs error, filtering fallback jobs:', err)
+    let list = [...FALLBACK_DIRECTORY_JOBS]
+    if (filters.value.keyword) {
+      const q = filters.value.keyword.toLowerCase()
+      list = list.filter(j => j.title.toLowerCase().includes(q) || j.company.name.toLowerCase().includes(q))
     }
+    if (filters.value.location) {
+      list = list.filter(j => j.location.toLowerCase().includes(filters.value.location.toLowerCase()))
+    }
+    if (filters.value.job_type) {
+      list = list.filter(j => j.job_type === filters.value.job_type)
+    }
+    if (filters.value.skill_id) {
+      const targetSkill = masterStore.skills.find(s => String(s.id) === String(filters.value.skill_id))
+      const targetName = targetSkill ? targetSkill.name.toLowerCase() : ''
+      list = list.filter(j => j.skills?.some(s => String(s.id) === String(filters.value.skill_id) || s.name.toLowerCase() === targetName))
+    }
+    if (filters.value.salary_min) {
+      list = list.filter(j => (j.salary_max || j.salary_min || 0) >= Number(filters.value.salary_min))
+    }
+    jobs.value = list
+    pagination.value = { currentPage: 1, lastPage: 1, total: list.length }
   } finally {
     loading.value = false
   }
+}
+
+function getCategoryName(id) {
+  const c = masterStore.categories.find(item => String(item.id) === String(id))
+  return c ? c.name : 'Category'
+}
+
+function getSkillName(id) {
+  const s = masterStore.skills.find(item => String(item.id) === String(id))
+  return s ? s.name : 'Skill'
 }
 
 function applyFilters() {
@@ -243,7 +268,7 @@ watch(() => route.query, (newQuery) => {
             <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('keyword')"></i>
           </span>
           <span v-if="filters.category_id" class="filter-chip">
-            Category
+            Category: {{ getCategoryName(filters.category_id) }}
             <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('category_id')"></i>
           </span>
           <span v-if="filters.location" class="filter-chip">
@@ -255,7 +280,7 @@ watch(() => route.query, (newQuery) => {
             <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('job_type')"></i>
           </span>
           <span v-if="filters.skill_id" class="filter-chip">
-            Skill
+            Skill: {{ getSkillName(filters.skill_id) }}
             <i class="bi bi-x ms-1 cursor-pointer" @click="removeFilter('skill_id')"></i>
           </span>
           <button class="btn btn-sm btn-link text-danger text-decoration-none p-0 ms-2" @click="clearFilters">
