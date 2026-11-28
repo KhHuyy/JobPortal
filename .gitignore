@@ -38,3 +38,7 @@ Thumbs.db
 .impeccable/
 skills/
 
+
+*.docx
+SPEC.md
+SPECIALIZED_PROJECT_REPORT_CT466.md
